@@ -5,7 +5,6 @@ import urls from '../Constants/urls'
 export class Timezone extends Component {
     constructor(props) {
         super(props)
-    
         this.state = {
             zones : [],
             selectedValue: '',
