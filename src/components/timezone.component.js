@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import axios from 'axios';
 import urls from '../Constants/urls'
 
-export class Timezone extends Component {
+export class Timezone extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -26,14 +26,14 @@ export class Timezone extends Component {
     }
 
     async callSelectedTime (zone) {
-        const selectedZone = await axios.get(`${urls.specificZone}${zone}`);
+        const selectedZone = await axios.get(`${urls.SPECIFICZONE}${zone}`);
         this.setState({
             selectedTime: selectedZone.data.formatted
         })
     }
     
-    async componentDidMount() {
-        const data = await axios.get(`${urls.zones}`)
+    fetchData = async () => {
+        const data = await axios.get(`${urls.ZONES}`)
         this.setState({
             zones : data.data.zones,
             loading: true
@@ -47,11 +47,14 @@ export class Timezone extends Component {
         },5000)
     }
 
+    componentDidMount() {
+        this.fetchData();
+    }
+
     componentWillUnmount() {
         clearInterval(this.clearInterval);
     }
-
-    // - {(new Date()).toLocaleString('en-GB', { timeZone: zone.zoneName })}
+    
     render() {
         return (<>
         {!this.state.loading?<h2>Loading Time Zones...</h2>:
